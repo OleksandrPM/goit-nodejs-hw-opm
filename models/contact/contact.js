@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { handleErrorSave, handleUpdateValidate } = require("./hooks");
+const { handleErrorSave, handleUpdateValidate } = require("../hooks");
 
 const contactSchema = new Schema({
   name: {
