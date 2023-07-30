@@ -29,6 +29,6 @@ contactSchema.pre("findOneAndUpdate", handleUpdateValidate);
 contactSchema.post("save", handleErrorSave);
 contactSchema.post("findOneAndUpdate", handleErrorSave);
 
-const Contact = model("Contact", contactSchema);
+const Contact = model("contact", contactSchema);
 
 module.exports = { Contact };

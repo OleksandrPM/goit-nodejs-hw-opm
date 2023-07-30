@@ -1,4 +1,6 @@
 const { Schema, model } = require("mongoose");
+const { handleUpdateValidate, handleErrorSave } = require("../hooks");
+const { emailRegexp, subscriptionValues } = require("../../constants");
 
 const userSchema = new Schema({
   password: {
@@ -7,22 +9,23 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
+    match: emailRegexp,
     required: [true, "Email is required"],
     unique: true,
   },
   subscription: {
     type: String,
-    enum: ["starter", "pro", "business"],
-    default: "starter",
+    enum: subscriptionValues,
+    default: subscriptionValues[0],
   },
   token: String,
 });
 
-// contactSchema.pre("findOneAndUpdate", handleUpdateValidate);
+userSchema.pre("findOneAndUpdate", handleUpdateValidate);
 
-// contactSchema.post("save", handleErrorSave);
-// contactSchema.post("findOneAndUpdate", handleErrorSave);
+userSchema.post("save", handleErrorSave);
+userSchema.post("findOneAndUpdate", handleErrorSave);
 
-const User = model("User", userSchema);
+const User = model("user", userSchema);
 
 module.exports = { User };
