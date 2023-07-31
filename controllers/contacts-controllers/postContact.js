@@ -2,14 +2,19 @@ const { Contact } = require("../../models/contact");
 const { HttpError } = require("../../helpers");
 const { ctrlrWrapper } = require("../../decorators");
 
+const successStatus = 201;
+const errStatus = 400;
+const errMessage = "Contact already exists";
+
 const postContact = async (req, res, next) => {
-  const result = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Contact.create({ ...req.body, owner });
 
   if (!result) {
-    throw HttpError(400, "Contact already exists");
+    throw HttpError(errStatus, errMessage);
   }
 
-  res.status(201).json(result);
+  res.status(successStatus).json(result);
 };
 
 module.exports = {

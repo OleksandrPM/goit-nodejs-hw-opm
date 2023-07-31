@@ -2,6 +2,9 @@ const { Contact } = require("../../models/contact");
 const { HttpError } = require("../../helpers");
 const { ctrlrWrapper } = require("../../decorators");
 
+const successStatus = 200;
+const errStatus = 404;
+
 const updateStatusContact = async (req, res, next) => {
   const { contactId } = req.params;
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
@@ -9,10 +12,10 @@ const updateStatusContact = async (req, res, next) => {
   });
 
   if (!result) {
-    throw HttpError(404);
+    throw HttpError(errStatus);
   }
 
-  res.status(200).json(result);
+  res.status(successStatus).json(result);
 };
 
 module.exports = {
