@@ -19,6 +19,7 @@ const userSchema = new Schema({
     default: subscriptionValues[0],
   },
   token: String,
+  avatarURL: String,
 });
 
 userSchema.pre("findOneAndUpdate", handleUpdateValidate);
