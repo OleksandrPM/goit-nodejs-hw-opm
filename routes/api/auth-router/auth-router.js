@@ -5,6 +5,7 @@ const {
   logoutUser,
   getCurrentUser,
   updateSubscription,
+  updateAvatar,
 } = require("../../../controllers/auth-controllers");
 const { validateBody } = require("../../../decorators");
 const {
@@ -13,7 +14,7 @@ const {
   updateSubscriptionSchema,
 } = require("../../../schemas/users-schemas");
 
-const { authenticate } = require("../../../middlewares");
+const { authenticate, upload } = require("../../../middlewares");
 
 const authRouter = express.Router();
 
@@ -30,6 +31,13 @@ authRouter.patch(
   authenticate,
   validateBody(updateSubscriptionSchema),
   updateSubscription
+);
+
+authRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatarURL"),
+  updateAvatar
 );
 
 module.exports = authRouter;

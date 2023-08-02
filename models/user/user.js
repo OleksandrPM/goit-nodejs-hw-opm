@@ -18,8 +18,8 @@ const userSchema = new Schema({
     enum: subscriptionValues,
     default: subscriptionValues[0],
   },
-  token: String,
-  avatarURL: String,
+  token: { type: String },
+  avatarURL: { type: String },
 });
 
 userSchema.pre("findOneAndUpdate", handleUpdateValidate);
