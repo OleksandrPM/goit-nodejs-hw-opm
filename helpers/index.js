@@ -1,3 +1,4 @@
-const { HttpError } = require("./HttpError");
+const HttpError = require("./HttpError");
+const avatarHandler = require("./avatarHandler");
 
-module.exports = { HttpError };
+module.exports = { HttpError, avatarHandler };
