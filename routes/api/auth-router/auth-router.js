@@ -6,12 +6,15 @@ const {
   getCurrentUser,
   updateSubscription,
   updateAvatar,
+  verifyUser,
+  resendVerifyEmail,
 } = require("../../../controllers/auth-controllers");
 const { validateBody } = require("../../../decorators");
 const {
   userSignupSchema,
   userLoginSchema,
   updateSubscriptionSchema,
+  verifyEmailSchema,
 } = require("../../../schemas/users-schemas");
 
 const { authenticate, upload } = require("../../../middlewares");
@@ -19,6 +22,15 @@ const { authenticate, upload } = require("../../../middlewares");
 const authRouter = express.Router();
 
 authRouter.post("/register", validateBody(userSignupSchema), registerUser);
+
+authRouter.get("/verify/:verificationToken", verifyUser);
+
+const bedRequestBodyMsg = "missing required field email";
+authRouter.post(
+  "/verify",
+  validateBody(verifyEmailSchema, bedRequestBodyMsg),
+  resendVerifyEmail
+);
 
 authRouter.post("/login", validateBody(userLoginSchema), loginUser);
 
