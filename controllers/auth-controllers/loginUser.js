@@ -10,6 +10,7 @@ const { JWT_SECRET } = process.env;
 const loginSuccessStatus = 200;
 const loginErrStatus = 401;
 const loginErrMessage = "Email or password is wrong";
+const verifyErrMessage = "The email is not verified";
 
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -17,6 +18,10 @@ const loginUser = async (req, res, next) => {
 
   if (!user) {
     throw HttpError(loginErrStatus, loginErrMessage);
+  }
+
+  if (!user.verify) {
+    throw HttpError(loginErrStatus, verifyErrMessage);
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
