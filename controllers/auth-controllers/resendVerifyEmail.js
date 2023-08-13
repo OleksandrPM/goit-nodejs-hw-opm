@@ -1,9 +1,7 @@
 const { ctrlrWrapper } = require("../../decorators");
 const { User } = require("../../models/user");
-const { HttpError, sendEmail } = require("../../helpers");
-
-require("dotenv").config();
-const { BASE_URL } = process.env;
+const { HttpError } = require("../../helpers");
+const { sendVerificationEmail } = require("../../services/email");
 
 const userNotFoundStatus = 404;
 const isVerifiedErrorStatus = 400;
@@ -27,13 +25,7 @@ const resendVerifyEmail = async (req, res) => {
     throw HttpError(isVerifiedErrorStatus, isVerifiedErrorMsg);
   }
 
-  const verificationEmail = {
-    to: email,
-    subject: "Verify email",
-    html: `<a href="${BASE_URL}/api/users/verify/${user.verificationToken}" target="_blank">Click to verify email on goit-nodejs-hw-opm</a>`,
-  };
-
-  await sendEmail(verificationEmail);
+  sendVerificationEmail(email, user.verificationToken);
 
   res.status(successResendStatus).json({ message: successResendMsg });
 };

@@ -4,10 +4,8 @@ const { nanoid } = require("nanoid");
 
 const { User } = require("../../models/user");
 const { ctrlrWrapper } = require("../../decorators");
-const { HttpError, sendEmail } = require("../../helpers");
-
-require("dotenv").config();
-const { BASE_URL } = process.env;
+const { HttpError } = require("../../helpers");
+const { sendVerificationEmail } = require("../../services/email");
 
 const registerSuccessStatus = 201;
 const registerErrStatus = 409;
@@ -35,13 +33,7 @@ const registerUser = async (req, res) => {
     verificationToken,
   });
 
-  const verificationEmail = {
-    to: email,
-    subject: "Verify email",
-    html: `<a href="${BASE_URL}/api/users/verify/${verificationToken}" target="_blank">Click to verify email on goit-nodejs-hw-opm</a>`,
-  };
-
-  await sendEmail(verificationEmail);
+  sendVerificationEmail(email, verificationToken);
 
   res.status(registerSuccessStatus).json({
     email: newUser.email,
